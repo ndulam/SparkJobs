@@ -1,0 +1,49 @@
+saveToCassandra:
+ Type1:
+CREATE TABLE stck.posts (postId int PRIMARY KEY,description text, count int);
+val   rdd = sc.textFile(“file:///home/hadoop/work/posts.txt”).map(_.split(“,”)).map(x=>(x(0),x(1),x(2)))
+rdd.saveToCassandra("stck ", " posts ", SomeColumns("postid",”description”, "count"))
+
+Type2:
+Another way of mapping RDD data to columns using index
+val updated = sc.parallelize(Seq((13,"Aparna Q",14)))
+updated.saveToCassandra("stck", "posts", SomeColumns("postid" as "_3","description" as "_2" , "count" as "_1"))
+
+Type3:
+Say you want to save Word Count objects to the table which has columns word TEXT and num INT.
+case class Word Count(word: String, count: Long)
+val collection = sc.parallelize(Seq(WordCount("dog", 50), WordCount("cow", 60)))
+collection. SaveToCassandra("test", "words2", SomeColumns("word", "num" as "count"))
+
+
+saveAsCassandraTable:
+case class WordCount(word: String, count: Long)
+val collection = sc.parallelize(Seq(WordCount("dog", 50), WordCount("cow", 60)))
+collection.saveAsCassandraTable("test", "words_new", SomeColumns("word", "count"))
+
+saveAsCassandraTableEx:
+case class users(id:Int,name:String,place:String,city:String);
+import  com.datastax.spark.connector.cql.{ColumnDef, RegularColumn, TableDef, ClusteringColumn, PartitionKeyColumn}
+import com.datastax.spark.connector.types._
+val idcol = new ColumnDef("id",PartitionKeyColumn,IntType)
+val namecol = new ColumnDef("name",ClusteringColumn(0),TextType)
+val placecol = new ColumnDef("place",RegularColumn,TextType)
+val citycol = new ColumnDef("city",RegularColumn,TextType)
+val table = new TableDef("stck","users",Seq(idcol),Seq(namecol),Seq(placecol,citycol))
+val userdf = sc.textFile("file:///home/hadoop/data/users").map(_.split(",")).map(row=>users(row(0).toInt,row(1).toString,row(2).toString,row(3).toString))
+userdf.saveAsCassandraTableEx(table,SomeColumns("id","name","place","city"))
+
+Input files:
+users.txt
+1,naresh,seattle,WA
+2,Aparna,Seattle,WA
+3,Chitti,Bellevue,WA
+4,Vinay,Bellevue,WA
+5,Sathaiah,Renton,WA
+6,Jyothi,Renton,WA
+
+posts.txt:
+1,Hadoop Q,3
+2,Java Q,6
+3,Spark Q,11
+
