@@ -1,0 +1,18 @@
+import com.datastax.spark.connector._ 
+import com.datastax.driver.core._
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkContext._
+import org.apache.spark.SparkConf
+val conf = new SparkConf(true)
+conf.set("spark.cassandra.connection.host","localhost")
+val sc = new SparkContext("local[2]","test",conf)
+
+case class company(name:String,address:UDTValue)
+val address = UDTValue.fromMap(Map("name"->"TMobile","street"->"156th","number"->1234))
+val company1 = company("DataStax",address)
+sc.parallelize(Seq(company1)).saveToCassandra("stck","comapany")
+
+/*
+CREATE TYPE address (city text, street text, number int);
+CREATE TABLE companies (name text PRIMARY KEY, address FROZEN<address>);
+*/
