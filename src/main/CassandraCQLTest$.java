@@ -1,17 +1,3 @@
-package com.naresh.org;
-
-import java.nio.ByteBuffer
-import java.util.Collections
-
-import org.apache.cassandra.hadoop.ConfigHelper
-import org.apache.cassandra.hadoop.cql3.CqlPagingInputFormat
-import org.apache.cassandra.hadoop.cql3.CqlConfigHelper
-import org.apache.cassandra.hadoop.cql3.CqlOutputFormat
-import org.apache.cassandra.utils.ByteBufferUtil
-import org.apache.hadoop.mapreduce.Job
-
-import org.apache.spark.{SparkConf, SparkContext}
-
 /**
  * This example demonstrates how to read and write to cassandra column family created using CQL3
  * using Spark.
@@ -87,5 +73,3 @@ object CassandraCQLTest {
     sc.stop()
   }
 }
-// scalastyle:on println
-// scalastyle:on jobcontext

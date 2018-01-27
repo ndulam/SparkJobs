@@ -1,6 +1,4 @@
-package com.naresh.org
-
-case class badgesclass 
+case class badgesclass
 {
 
   var id:Option[Int];
@@ -9,5 +7,5 @@ case class badgesclass
   var name:Option[String];
   var tagbased:Option[String];
   var userid:Option[String]
- 
+
 }

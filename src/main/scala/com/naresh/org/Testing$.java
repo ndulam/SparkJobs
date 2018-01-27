@@ -1,5 +1,3 @@
-package com.naresh.org
-
 object Testing {
 
   def main(args: Array[String]): Unit = {

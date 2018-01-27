@@ -1,12 +1,6 @@
-package com.naresh.org
-import com.datastax.spark.connector._ 
-import com.datastax.driver.core._
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkContext._
-import org.apache.spark.SparkConf
 object CassandraTable {
 
-  def main(args: Array[String]): Unit = 
+  def main(args: Array[String]): Unit =
 	  {
 		  val conf = new SparkConf(true)
 		  conf.set("spark.cassandra.connection.host","localhost")
